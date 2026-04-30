@@ -20,6 +20,7 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
    */
   private Map<String, Integer> gameCounts;
   private Map<String, Integer> highScores;
+  private Map<String, Integer> totalScores;
 
   // For some waves you will need to add more private instance variables here!
 
@@ -28,6 +29,7 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
   public MapGameStatsCalculator(Scanner scoreInput) {
     gameCounts = new HashMap<>();
     highScores = new HashMap<>();
+    totalScores = new HashMap<>();
 
     while(scoreInput.hasNext()) {
       String name = scoreInput.next();
@@ -37,6 +39,7 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
       if(!gameCounts.containsKey(name)) {
         gameCounts.put(name, 1);
         highScores.put(name, score);
+        totalScores.put(name, score);
       } else {
         int oldCounts = gameCounts.get(name);
         gameCounts.put(name, oldCounts + 1);
@@ -45,6 +48,9 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
         if(score > oldHighScore) {
           highScores.put(name, score);
         }
+
+        int oldTotal = totalScores.get(name);
+        totalScores.put(name, oldTotal + score);
       }
     }
   }
@@ -100,7 +106,8 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
     throw new UnsupportedOperationException("Unimplemented method 'highestScorer'");
 
     // Uncomment this and have it as your first line once you remove the UnsupportedOperationException
-    //checkScoreData();
+    // checkScoreData();
+
   }
 
   /**
@@ -113,10 +120,15 @@ public class MapGameStatsCalculator implements GameStatsCalculator {
   @Override
   public double getAverageScore(String person) {
     // TODO: remove this exception once you have implemented your method!
-    throw new UnsupportedOperationException("Unimplemented method 'getAverageScore'");
+    //throw new UnsupportedOperationException("Unimplemented method 'getAverageScore'");
 
     // Uncomment this and have it as your first line once you remove the UnsupportedOperationException
-    //checkPerson(person);
+    checkPerson(person);
+
+    int total = totalScores.get(person);
+    int count = gameCount(person);
+
+    return (double) total / count;
   }
 
   /**
